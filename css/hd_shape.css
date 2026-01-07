@@ -1,0 +1,812 @@
+@import 'hd_base.css';
+
+.framecard{
+    box-sizing: border-box;
+    position: relative;
+    background: rgb(33, 30, 30);
+    background-image: linear-gradient(to top right, #5D5D5B, #383838);
+    width: 80px;
+    height: 200px;
+    cursor: pointer;
+    box-shadow:
+      -1px 1px var(--blur) 1px rgba(0,0,0,0.10),
+      -2px 2px var(--blur) 1px rgba(0,0,0,0.09),
+      -3px 3px var(--blur) 1px rgba(0,0,0,0.08),
+      -4px 4px var(--blur) 1px rgba(0,0,0,0.07),
+      -5px 5px var(--blur) 1px rgba(0,0,0,0.06),
+      -6px 6px var(--blur) 1px rgba(0,0,0,0.05),
+      -7px 7px var(--blur) 1px rgba(0,0,0,0.04),
+      -8px 8px var(--blur) 1px rgba(0,0,0,0.03),
+      -9px 9px var(--blur) 1px rgba(0,0,0,0.03),
+      -10px 10px var(--blur) 1px rgba(0,0,0,0.03),
+      -11px 11px var(--blur) 1px rgba(0,0,0,0.03),
+      -12px 12px var(--blur) 1px rgba(0,0,0,0.02),
+      -13px 13px var(--blur) 1px rgba(0,0,0,0.02),
+      -14px 14px var(--blur) 1px rgba(0,0,0,0.01),
+      -15px 15px var(--blur) 1px rgba(0,0,0,0.01),
+      -16px 16px var(--blur) 1px rgba(0,0,0,0.01)
+    ;
+    &:before{
+      content: ' ';
+      display: block;
+      padding-bottom: 140%;
+    }
+
+    
+  }
+  
+.framecard-frame {
+    left: 5px;
+    top: 5px;
+    right: 5px;
+    bottom: 5px;
+    box-shadow: inset -1px 1px 6px 1px rgba(0, 0, 0, 0.24);
+
+    background: white;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    padding: 5px; /* 内部边距也调整为5px */
+    box-sizing: border-box;
+    position: absolute;
+    margin: 0; /* 确保没有额外外边距 */
+
+    --grain-china-corner-color: black; /* 中国角的颜色 */
+  }
+
+.framecard-name {
+	width: 80px;
+    height: 80px;
+}
+.framecard-zp {
+	width: 80px;
+    height: 200px;
+}
+
+.framecard-zx {
+	width: 800px;
+    height: 600px;
+}
+
+.framecard-index {
+	width: 120px;
+    height: 320px;
+}
+
+.framecard-edit {
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+}
+
+.framecards-container {
+	margin: 0 auto; /* 水平居中 */
+	padding-top: 0px; /* 添加顶部间距 */
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 40px;
+	width: 80%;
+	z-index: 950;
+  }
+/*--------------------- corner -------------------*/
+/*.black:hover { background: #333;} #8B2500*/
+.corner {
+    position: absolute;
+    /*background:red;*/
+    background:none;
+    width:6em;
+    height:6em;
+    font-size:3.5px;
+  
+    opacity: 1.0;
+    transition: opacity 0.3s ease-in-out;
+  }
+  .corner:after {
+    position: absolute;
+    content: '';
+    display: block;
+    width:0.2em;
+    height:0.2em;
+  }
+  .topleft {
+    top:1em;
+    left:1em; 
+    /* I do not know why, but it's better with this - */
+    -webkit-transform:rotate(360deg); transform:rotate(360deg); 
+  }
+  .topright {  
+    top:1em; right:1em; -webkit-transform:rotate(90deg); transform:rotate(90deg); 
+  }
+  .bottomleft { 
+    bottom:1em; left:1em; -webkit-transform:rotate(270deg); transform:rotate(270deg); 
+  }
+  .bottomright { 
+    bottom:1em; right:1em; -webkit-transform:rotate(180deg); transform:rotate(180deg); 
+  }
+  
+  /* Corners
+  ------------------------------------------------------------ */
+  .variant:after {
+    width:0.01em;
+    height:0.01em;
+  }
+  .corner1:after {
+    /*transition: box-shadow 0.5s ease-in-out;*/
+    box-shadow:
+      4.2em 0em 0 var(--grain-china-corner-color), 4.4em 0em 0 var(--grain-china-corner-color), 4.6em 0em 0 var(--grain-china-corner-color),
+      1.2em 0.2em 0 var(--grain-china-corner-color), 1.4em 0.2em 0 var(--grain-china-corner-color), 1.6em 0.2em 0 var(--grain-china-corner-color), 1.8em 0.2em 0 var(--grain-china-corner-color), 4em 0.2em 0 var(--grain-china-corner-color), 4.8em 0.2em 0 var(--grain-china-corner-color),
+      1em 0.4em 0 var(--grain-china-corner-color), 2em 0.4em 0 var(--grain-china-corner-color), 4em 0.4em 0 var(--grain-china-corner-color), 4.4em 0.4em 0 var(--grain-china-corner-color), 4.8em 0.4em 0 var(--grain-china-corner-color),
+      1em 0.6em 0 var(--grain-china-corner-color), 2em 0.6em 0 var(--grain-china-corner-color), 4.2em 0.6em 0 var(--grain-china-corner-color), 4.8em 0.6em 0 var(--grain-china-corner-color),
+      2em 0.8em 0 var(--grain-china-corner-color), 4.6em 0.8em 0 var(--grain-china-corner-color),
+      0.4em 1em 0 var(--grain-china-corner-color), 0.6em 1em 0 var(--grain-china-corner-color), 0.8em 1em 0 var(--grain-china-corner-color), 1em 1em 0 var(--grain-china-corner-color), 1.2em 1em 0 var(--grain-china-corner-color), 1.4em 1em 0 var(--grain-china-corner-color), 1.6em 1em 0 var(--grain-china-corner-color), 2em 1em 0 var(--grain-china-corner-color), 2.4em 1em 0 var(--grain-china-corner-color), 2.6em 1em 0 var(--grain-china-corner-color), 2.8em 1em 0 var(--grain-china-corner-color), 3em 1em 0 var(--grain-china-corner-color), 3.2em 1em 0 var(--grain-china-corner-color), 3.4em 1em 0 var(--grain-china-corner-color), 3.6em 1em 0 var(--grain-china-corner-color), 3.8em 1em 0 var(--grain-china-corner-color), 4em 1em 0 var(--grain-china-corner-color), 4.2em 1em 0 var(--grain-china-corner-color), 4.4em 1em 0 var(--grain-china-corner-color),
+      0.2em 1.2em 0 var(--grain-china-corner-color), 2.0em 1.2em 0 var(--grain-china-corner-color),
+      0.2em 1.4em 0 var(--grain-china-corner-color), 1.0em 1.4em 0 var(--grain-china-corner-color), 2.0em 1.4em 0 var(--grain-china-corner-color),
+      0.2em 1.6em 0 var(--grain-china-corner-color), 1.0em 1.6em 0 var(--grain-china-corner-color), 2.0em 1.6em 0 var(--grain-china-corner-color),
+      0.2em 1.8em 0 var(--grain-china-corner-color), 1.0em 1.8em 0 var(--grain-china-corner-color), 5.2em 1.8em 0 var(--grain-china-corner-color),
+      0.4em 2.0em 0 var(--grain-china-corner-color), 0.6em 2.0em 0 var(--grain-china-corner-color), 1em 2.0em 0 var(--grain-china-corner-color), 1.4em 2.0em 0 var(--grain-china-corner-color), 1.6em 2.0em 0 var(--grain-china-corner-color), 1.8em 2.0em 0 var(--grain-china-corner-color), 2.0em 2.0em 0 var(--grain-china-corner-color), 2.2em 2.0em 0 var(--grain-china-corner-color), 2.4em 2.0em 0 var(--grain-china-corner-color), 2.6em 2.0em 0 var(--grain-china-corner-color), 2.8em 2.0em 0 var(--grain-china-corner-color), 3em 2.0em 0 var(--grain-china-corner-color), 3.2em 2.0em 0 var(--grain-china-corner-color), 3.4em 2.0em 0 var(--grain-china-corner-color), 3.6em 2.0em 0 var(--grain-china-corner-color), 3.8em 2.0em 0 var(--grain-china-corner-color), 4.0em 2.0em 0 var(--grain-china-corner-color), 4.2em 2.0em 0 var(--grain-china-corner-color), 4.4em 2.0em 0 var(--grain-china-corner-color), 4.6em 2.0em 0 var(--grain-china-corner-color), 4.8em 2.0em 0 var(--grain-china-corner-color), 5.0em 2.0em 0 var(--grain-china-corner-color), 5.4em 2.0em 0 var(--grain-china-corner-color),
+      1.0em 2.2em 0 var(--grain-china-corner-color), 5.2em 2.2em 0 var(--grain-china-corner-color),
+      1.0em 2.4em 0 var(--grain-china-corner-color), 2.0em 2.4em 0 var(--grain-china-corner-color),
+      1.0em 2.6em 0 var(--grain-china-corner-color), 2.0em 2.6em 0 var(--grain-china-corner-color),
+      1.0em 2.8em 0 var(--grain-china-corner-color), 2.0em 2.8em 0 var(--grain-china-corner-color),
+      1.0em 3.0em 0 var(--grain-china-corner-color), 2.0em 3.0em 0 var(--grain-china-corner-color),
+      1.0em 3.2em 0 var(--grain-china-corner-color), 2.0em 3.2em 0 var(--grain-china-corner-color),
+      1.0em 3.4em 0 var(--grain-china-corner-color), 2.0em 3.4em 0 var(--grain-china-corner-color),
+      1.0em 3.6em 0 var(--grain-china-corner-color), 2.0em 3.6em 0 var(--grain-china-corner-color),
+      1.0em 3.8em 0 var(--grain-china-corner-color), 2.0em 3.8em 0 var(--grain-china-corner-color),
+      0.2em 4.0em 0 var(--grain-china-corner-color), 0.4em 4.0em 0 var(--grain-china-corner-color), 1.0em 4.0em 0 var(--grain-china-corner-color), 2.0em 4.0em 0 var(--grain-china-corner-color),
+      0em 4.2em 0 var(--grain-china-corner-color), 0.6em 4.2em 0 var(--grain-china-corner-color), 1.0em 4.2em 0 var(--grain-china-corner-color), 2.0em 4.2em 0 var(--grain-china-corner-color),
+      0em 4.4em 0 var(--grain-china-corner-color), 0.4em 4.4em 0 var(--grain-china-corner-color), 1.0em 4.4em 0 var(--grain-china-corner-color), 2.0em 4.4em 0 var(--grain-china-corner-color),
+      0em 4.6em 0 var(--grain-china-corner-color), 0.8em 4.6em 0 var(--grain-china-corner-color), 2.0em 4.6em 0 var(--grain-china-corner-color),
+      0.2em 4.8em 0 var(--grain-china-corner-color), 0.4em 4.8em 0 var(--grain-china-corner-color), 0.6em 4.8em 0 var(--grain-china-corner-color), 2.0em 4.8em 0 var(--grain-china-corner-color),
+      2.0em 5.0em 0 var(--grain-china-corner-color),
+      1.8em 5.2em 0 var(--grain-china-corner-color), 2.2em 5.2em 0 var(--grain-china-corner-color),
+      2.0em 5.4em 0 var(--grain-china-corner-color);
+  }
+  .corner2:after {
+    box-shadow:
+      0.2em 0.2em 0 var(--grain-china-corner-color), 0.4em 0.2em 0 var(--grain-china-corner-color), 0.6em 0.2em 0 var(--grain-china-corner-color), 0.8em 0.2em 0 var(--grain-china-corner-color), 1.8em 0.2em 0 var(--grain-china-corner-color), 2.0em 0.2em 0 var(--grain-china-corner-color), 2.2em 0.2em 0 var(--grain-china-corner-color), 3.4em 0.2em 0 var(--grain-china-corner-color), 3.6em 0.2em 0 var(--grain-china-corner-color), 3.8em 0.2em 0 var(--grain-china-corner-color), 4.6em 0.2em var(--grain-china-corner-color), 4.8em 0.2em 0 var(--grain-china-corner-color), 5.0em 0.2em 0 var(--grain-china-corner-color),
+      0.2em 0.4em 0 var(--grain-china-corner-color), 0.8em 0.4em 0 var(--grain-china-corner-color), 1.6em 0.4em 0 var(--grain-china-corner-color), 2.4em 0.4em 0 var(--grain-china-corner-color), 3.2em 0.4em 0 var(--grain-china-corner-color), 4.0em 0.4em 0 var(--grain-china-corner-color), 4.4em 0.4em 0 var(--grain-china-corner-color), 5.2em 0.4em 0 var(--grain-china-corner-color),
+      0.2em 0.6em 0 var(--grain-china-corner-color), 1.6em 0.6em 0 var(--grain-china-corner-color), 3.2em 0.6em 0 var(--grain-china-corner-color), 4.2em 0.6em 0 var(--grain-china-corner-color), 5.2em 0.6em 0 var(--grain-china-corner-color),
+      0.2em 0.8em 0 var(--grain-china-corner-color), 0.4em 0.8em 0 var(--grain-china-corner-color), 0.6em 0.8em 0 var(--grain-china-corner-color), 0.8em 0.8em 0 var(--grain-china-corner-color), 1.0em 0.8em 0 var(--grain-china-corner-color), 1.2em 0.8em 0 var(--grain-china-corner-color), 1.6em 0.8em 0 var(--grain-china-corner-color), 2.0em 0.8em 0 var(--grain-china-corner-color), 2.2em 0.8em 0 var(--grain-china-corner-color), 2.4em 0.8em 0 var(--grain-china-corner-color), 2.6em 0.8em 0 var(--grain-china-corner-color), 2.8em 0.8em 0 var(--grain-china-corner-color), 3.4em 0.8em 0 var(--grain-china-corner-color), 3.6em 0.8em 0 var(--grain-china-corner-color), 4.2em 0.8em 0 var(--grain-china-corner-color), 5.2em 0.8em 0 var(--grain-china-corner-color), 
+      1.6em 1.0em 0 var(--grain-china-corner-color), 3.0em 1.0em 0 var(--grain-china-corner-color), 4.2em 1.0em 0 var(--grain-china-corner-color), 4.8em 1.0em 0 var(--grain-china-corner-color), 5.0em 1.0em 0 var(--grain-china-corner-color), 
+      0.8em 1.2em 0 var(--grain-china-corner-color), 1.6em 1.2em 0 var(--grain-china-corner-color), 2.4em 1.2em 0 var(--grain-china-corner-color), 3.0em 1.2em 0 var(--grain-china-corner-color), 4.2em 1.2em 0 var(--grain-china-corner-color), 
+      0.8em 1.4em 0 var(--grain-china-corner-color), 2.4em 1.4em 0 var(--grain-china-corner-color), 3.0em 1.4em 0 var(--grain-china-corner-color), 4.0em 1.4em 0 var(--grain-china-corner-color), 
+      0.4em 1.6em 0 var(--grain-china-corner-color), 0.8em 1.6em 0 var(--grain-china-corner-color), 1.2em 1.6em 0 var(--grain-china-corner-color), 1.4em 1.6em 0 var(--grain-china-corner-color), 1.6em 1.6em 0 var(--grain-china-corner-color), 1.8em 1.6em 0 var(--grain-china-corner-color), 2.0em 1.6em 0 var(--grain-china-corner-color), 2.4em 1.6em 0 var(--grain-china-corner-color), 2.8em 1.6em 0 var(--grain-china-corner-color), 4.0em 1.6em 0 var(--grain-china-corner-color), 
+      0.2em 1.8em 0 var(--grain-china-corner-color), 0.8em 1.8em 0 var(--grain-china-corner-color), 2.4em 1.8em 0 var(--grain-china-corner-color), 3.8em 1.8em 0 var(--grain-china-corner-color), 
+      0.2em 2.0em 0 var(--grain-china-corner-color), 0.8em 2.0em 0 var(--grain-china-corner-color), 1.6em 2.0em 0 var(--grain-china-corner-color), 2.4em 2.0em 0 var(--grain-china-corner-color), 3.6em 2.0em 0 var(--grain-china-corner-color), 
+      0.2em 2.2em 0 var(--grain-china-corner-color), 1.6em 2.2em 0 var(--grain-china-corner-color), 3.2em 2.2em 0 var(--grain-china-corner-color), 3.4em 2.2em 0 var(--grain-china-corner-color),   
+      0.4em 2.4em 0 var(--grain-china-corner-color), 0.6em 2.4em 0 var(--grain-china-corner-color), 0.8em 2.4em 0 var(--grain-china-corner-color), 1.0em 2.4em 0 var(--grain-china-corner-color), 1.2em 2.4em 0 var(--grain-china-corner-color), 1.6em 2.4em 0 var(--grain-china-corner-color), 2.0em 2.4em 0 var(--grain-china-corner-color), 2.2em 2.4em 0 var(--grain-china-corner-color), 2.4em 2.4em 0 var(--grain-china-corner-color), 2.6em 2.4em 0 var(--grain-china-corner-color), 2.8em 2.4em 0 var(--grain-china-corner-color), 3.0em 2.4em 0 var(--grain-china-corner-color),
+      1.6em 2.6em 0 var(--grain-china-corner-color), 
+      0.8em 2.8em 0 var(--grain-china-corner-color), 1.6em 2.8em 0 var(--grain-china-corner-color), 2.4em 2.8em 0 var(--grain-china-corner-color), 
+      1.0em 3.0em 0 var(--grain-china-corner-color), 1.2em 3.0em 0 var(--grain-china-corner-color), 1.4em 3.0em 0 var(--grain-china-corner-color), 2.4em 3.0em 0 var(--grain-china-corner-color), 
+      0.4em 3.2em 0 var(--grain-china-corner-color), 0.6em 3.2em 0 var(--grain-china-corner-color), 2.2em 3.2em 0 var(--grain-china-corner-color), 
+      0.2em 3.4em 0 var(--grain-china-corner-color), 0.8em 3.4em 0 var(--grain-china-corner-color), 2.2em 3.4em 0 var(--grain-china-corner-color), 
+      0.2em 3.6em 0 var(--grain-china-corner-color), 0.8em 3.6em 0 var(--grain-china-corner-color), 2.0em 3.6em 0 var(--grain-china-corner-color), 
+      0.2em 3.8em 0 var(--grain-china-corner-color), 1.8em 3.8em 0 var(--grain-china-corner-color), 
+      0.4em 4.0em 0 var(--grain-china-corner-color), 1.4em 4.0em 0 var(--grain-china-corner-color), 1.6em 4.0em 0 var(--grain-china-corner-color), 
+      0.6em 4.2em 0 var(--grain-china-corner-color), 0.8em 4.2em 0 var(--grain-china-corner-color), 1.0em 4.2em 0 var(--grain-china-corner-color), 1.2em 4.2em 0 var(--grain-china-corner-color), 
+      0.4em 4.4em 0 var(--grain-china-corner-color), 
+      0.2em 4.6em 0 var(--grain-china-corner-color),
+      0.2em 4.8em 0 var(--grain-china-corner-color), 1.0em 4.8em 0 var(--grain-china-corner-color), 
+      0.2em 5.0em 0 var(--grain-china-corner-color), 1.0em 5.0em 0 var(--grain-china-corner-color), 
+      0.4em 5.2em 0 var(--grain-china-corner-color), 0.6em 5.2em 0 var(--grain-china-corner-color), 0.8em 5.2em 0 var(--grain-china-corner-color);
+  }
+  .corner3:after {
+      box-shadow:
+      0.2em 0.2em var(--grain-china-corner-color), 0.4em 0.2em var(--grain-china-corner-color), 0.6em 0.2em var(--grain-china-corner-color), 0.8em 0.2em var(--grain-china-corner-color), 1.0em 0.2em var(--grain-china-corner-color), 1.2em 0.2em var(--grain-china-corner-color), 1.4em 0.2em var(--grain-china-corner-color), 2.0em 0.2em var(--grain-china-corner-color), 2.2em 0.2em var(--grain-china-corner-color), 2.4em 0.2em var(--grain-china-corner-color), 2.6em 0.2em var(--grain-china-corner-color), 2.8em 0.2em var(--grain-china-corner-color), 3.0em 0.2em var(--grain-china-corner-color), 3.2em 0.2em var(--grain-china-corner-color), 3.4em 0.2em var(--grain-china-corner-color), 3.6em 0.2em var(--grain-china-corner-color), 3.8em 0.2em var(--grain-china-corner-color), 4.0em 0.2em var(--grain-china-corner-color), 4.2em 0.2em var(--grain-china-corner-color), 4.4em 0.2em var(--grain-china-corner-color), 4.6em 0.2em var(--grain-china-corner-color), 4.8em 0.2em var(--grain-china-corner-color), 5.0em 0.2em var(--grain-china-corner-color), 5.2em 0.2em var(--grain-china-corner-color), 5.4em 0.2em var(--grain-china-corner-color), 5.8em 0.2em var(--grain-china-corner-color), 
+      0.2em 0.4em var(--grain-china-corner-color), 1.4em 0.4em var(--grain-china-corner-color), 2.0em 0.4em var(--grain-china-corner-color), 
+      0.2em 0.6em var(--grain-china-corner-color), 1.4em 0.6em var(--grain-china-corner-color), 
+      0.2em 0.8em var(--grain-china-corner-color), 0.8em 0.8em var(--grain-china-corner-color), 1.0em 0.8em var(--grain-china-corner-color), 1.4em 0.8em var(--grain-china-corner-color), 1.8em 0.8em var(--grain-china-corner-color), 2.0em 0.8em var(--grain-china-corner-color), 2.2em 0.8em var(--grain-china-corner-color), 2.4em 0.8em var(--grain-china-corner-color), 2.6em 0.8em var(--grain-china-corner-color), 2.8em 0.8em var(--grain-china-corner-color), 3.0em 0.8em var(--grain-china-corner-color), 3.2em 0.8em var(--grain-china-corner-color), 3.4em 0.8em var(--grain-china-corner-color), 3.6em 0.8em var(--grain-china-corner-color), 3.8em 0.8em var(--grain-china-corner-color), 4.0em 0.8em var(--grain-china-corner-color), 4.2em 0.8em var(--grain-china-corner-color), 4.6em 0.8em var(--grain-china-corner-color), 
+      0.2em 1.0em var(--grain-china-corner-color), 0.8em 1.0em var(--grain-china-corner-color), 1.4em 1.0em var(--grain-china-corner-color), 3.6em 1.0em var(--grain-china-corner-color), 3.8em 1.0em var(--grain-china-corner-color), 
+      0.2em 1.2em var(--grain-china-corner-color), 0.8em 1.2em var(--grain-china-corner-color), 2.0em 1.2em var(--grain-china-corner-color), 3.2em 1.2em var(--grain-china-corner-color), 3.4em 1.2em var(--grain-china-corner-color), 
+      0.2em 1.4em var(--grain-china-corner-color), 0.4em 1.4em var(--grain-china-corner-color), 0.8em 1.4em var(--grain-china-corner-color), 1.2em 1.4em var(--grain-china-corner-color), 1.4em 1.4em var(--grain-china-corner-color), 1.6em 1.4em var(--grain-china-corner-color), 2.0em 1.4em var(--grain-china-corner-color), 2.4em 1.4em var(--grain-china-corner-color), 2.6em 1.4em var(--grain-china-corner-color), 2.8em 1.4em var(--grain-china-corner-color), 3.0em 1.4em var(--grain-china-corner-color), 
+      0.8em 1.6em var(--grain-china-corner-color), 2.0em 1.6em var(--grain-china-corner-color), 
+      1.4em 1.8em var(--grain-china-corner-color), 2.0em 1.8em var(--grain-china-corner-color), 
+      0.2em 2.0em var(--grain-china-corner-color), 0.4em 2.0em var(--grain-china-corner-color), 0.6em 2.0em var(--grain-china-corner-color), 0.8em 2.0em var(--grain-china-corner-color), 1.0em 2.0em var(--grain-china-corner-color), 1.4em 2.0em var(--grain-china-corner-color), 1.8em 2.0em var(--grain-china-corner-color), 2.0em 2.0em var(--grain-china-corner-color), 
+      0.2em 2.2em var(--grain-china-corner-color), 1.4em 2.2em var(--grain-china-corner-color), 
+      0.2em 2.4em var(--grain-china-corner-color), 0.8em 2.4em var(--grain-china-corner-color), 1.4em 2.4em var(--grain-china-corner-color), 
+      0.2em 2.6em var(--grain-china-corner-color), 0.8em 2.6em var(--grain-china-corner-color), 1.4em 2.6em var(--grain-china-corner-color), 
+      0.2em 2.8em var(--grain-china-corner-color), 0.8em 2.8em var(--grain-china-corner-color), 1.4em 2.8em var(--grain-china-corner-color), 
+      0.2em 3.0em var(--grain-china-corner-color), 0.8em 3.0em var(--grain-china-corner-color), 1.4em 3.0em var(--grain-china-corner-color), 
+      0.2em 3.2em var(--grain-china-corner-color), 0.8em 3.2em var(--grain-china-corner-color), 1.2em 3.2em var(--grain-china-corner-color), 
+      0.2em 3.4em var(--grain-china-corner-color), 0.8em 3.4em var(--grain-china-corner-color), 1.2em 3.4em var(--grain-china-corner-color), 
+      0.2em 3.6em var(--grain-china-corner-color), 0.8em 3.6em var(--grain-china-corner-color), 1.0em 3.6em var(--grain-china-corner-color), 
+      0.2em 3.8em var(--grain-china-corner-color), 0.8em 3.8em var(--grain-china-corner-color), 1.0em 3.8em var(--grain-china-corner-color), 
+      0.2em 4.0em var(--grain-china-corner-color), 0.8em 4.0em var(--grain-china-corner-color), 
+      0.2em 4.2em var(--grain-china-corner-color), 0.8em 4.2em var(--grain-china-corner-color), 
+      0.2em 4.4em var(--grain-china-corner-color),  
+      0.2em 4.6em var(--grain-china-corner-color), 0.8em 4.6em var(--grain-china-corner-color), 
+      0.2em 4.8em var(--grain-china-corner-color),
+      0.2em 5.0em var(--grain-china-corner-color), 
+      0.2em 5.2em var(--grain-china-corner-color), 
+      0.2em 5.4em var(--grain-china-corner-color), 
+      0.2em 5.8em var(--grain-china-corner-color);
+  }
+  .corner4:after {
+    box-shadow:
+      2.8em 0em var(--grain-china-corner-color), 3.0em 0em var(--grain-china-corner-color), 3.2em 0em var(--grain-china-corner-color), 
+      1.2em 0.2em var(--grain-china-corner-color), 1.4em 0.2em var(--grain-china-corner-color), 2.6em 0.2em var(--grain-china-corner-color), 3.4em 0.2em var(--grain-china-corner-color), 
+      1.0em 0.4em var(--grain-china-corner-color), 1.6em 0.4em var(--grain-china-corner-color), 2.4em 0.4em var(--grain-china-corner-color), 3.0em 0.4em var(--grain-china-corner-color), 3.6em 0.4em var(--grain-china-corner-color), 5.2em 0.4em var(--grain-china-corner-color), 5.6em 0.4em var(--grain-china-corner-color),
+      1.0em 0.6em var(--grain-china-corner-color), 1.6em 0.6em var(--grain-china-corner-color), 2.4em 0.6em var(--grain-china-corner-color), 2.8em 0.6em var(--grain-china-corner-color), 3.2em 0.6em var(--grain-china-corner-color), 3.6em 0.6em var(--grain-china-corner-color), 4.8em 0.6em var(--grain-china-corner-color), 
+      1.6em 0.8em var(--grain-china-corner-color), 3.0em 0.8em var(--grain-china-corner-color), 3.6em 0.8em var(--grain-china-corner-color), 4.4em 0.8em var(--grain-china-corner-color),  
+      0.4em 1.0em var(--grain-china-corner-color), 0.6em 1.0em var(--grain-china-corner-color), 0.8em 1.0em var(--grain-china-corner-color), 1.0em 1.0em var(--grain-china-corner-color), 1.2em 1.0em var(--grain-china-corner-color), 1.6em 1.0em var(--grain-china-corner-color), 2.0em 1.0em var(--grain-china-corner-color), 2.2em 1.0em var(--grain-china-corner-color), 2.4em 1.0em var(--grain-china-corner-color), 2.6em 1.0em var(--grain-china-corner-color), 2.8em 1.0em var(--grain-china-corner-color), 3.2em 1.0em var(--grain-china-corner-color), 3.4em 1.0em var(--grain-china-corner-color), 4.2em 1.0em var(--grain-china-corner-color), 
+      0.2em 1.2em var(--grain-china-corner-color), 1.6em 1.2em var(--grain-china-corner-color), 4.0em 1.2em var(--grain-china-corner-color), 
+      0.2em 1.4em var(--grain-china-corner-color), 1.0em 1.4em var(--grain-china-corner-color), 2.6em 1.4em var(--grain-china-corner-color), 3.8em 1.4em var(--grain-china-corner-color), 
+      0.4em 1.6em var(--grain-china-corner-color), 0.6em 1.6em var(--grain-china-corner-color), 1.0em 1.6em var(--grain-china-corner-color), 1.4em 1.6em var(--grain-china-corner-color), 1.6em 1.6em var(--grain-china-corner-color), 1.8em 1.6em var(--grain-china-corner-color), 2.0em 1.6em var(--grain-china-corner-color), 2.8em 1.6em var(--grain-china-corner-color), 3.0em 1.6em var(--grain-china-corner-color), 3.2em 1.6em var(--grain-china-corner-color), 3.4em 1.6em var(--grain-china-corner-color), 3.6em 1.6em var(--grain-china-corner-color), 
+      1.0em 1.8em var(--grain-china-corner-color), 2.2em 1.8em var(--grain-china-corner-color), 
+      1.0em 2.0em var(--grain-china-corner-color), 1.6em 2.0em var(--grain-china-corner-color), 2.2em 2.0em var(--grain-china-corner-color), 
+      1.0em 2.2em var(--grain-china-corner-color), 1.8em 2.2em var(--grain-china-corner-color), 2.0em 2.2em var(--grain-china-corner-color), 2.6em 2.2em var(--grain-china-corner-color),
+      0.4em 2.4em var(--grain-china-corner-color), 0.6em 2.4em var(--grain-china-corner-color), 1.0em 2.4em var(--grain-china-corner-color), 2.4em 2.4em var(--grain-china-corner-color), 
+      0.2em 2.6em var(--grain-china-corner-color), 1.0em 2.6em var(--grain-china-corner-color), 1.4em 2.6em var(--grain-china-corner-color), 2.2em 2.6em var(--grain-china-corner-color), 2.6em 2.6em var(--grain-china-corner-color), 
+      0em 2.8em var(--grain-china-corner-color), 0.6em 2.8em var(--grain-china-corner-color), 1.0em 2.8em var(--grain-china-corner-color), 1.6em 2.8em var(--grain-china-corner-color), 
+      0em 3.0em var(--grain-china-corner-color), 0.4em 3.0em var(--grain-china-corner-color), 0.8em 3.0em var(--grain-china-corner-color), 1.6em 3.0em var(--grain-china-corner-color), 
+      0em 3.2em var(--grain-china-corner-color), 0.6em 3.2em var(--grain-china-corner-color), 1.0em 3.2em var(--grain-china-corner-color), 1.6em 3.2em var(--grain-china-corner-color), 
+      0.2em 3.4em var(--grain-china-corner-color), 1.0em 3.4em var(--grain-china-corner-color), 1.6em 3.4em var(--grain-china-corner-color), 
+      0.4em 3.6em var(--grain-china-corner-color), 0.6em 3.6em var(--grain-china-corner-color), 0.8em 3.6em var(--grain-china-corner-color), 1.6em 3.6em var(--grain-china-corner-color), 
+      1.4em 3.8em var(--grain-china-corner-color), 
+      1.2em 4.0em var(--grain-china-corner-color), 
+      1.0em 4.2em var(--grain-china-corner-color), 
+      0.8em 4.4em var(--grain-china-corner-color), 
+      0.6em 4.8em var(--grain-china-corner-color), 
+      0.4em 5.2em var(--grain-china-corner-color), 
+      0.4em 5.6em var(--grain-china-corner-color);
+  }
+  .corner5:after { 
+    box-shadow:
+      0.2em 0em var(--grain-china-corner-color), 0.4em 0em var(--grain-china-corner-color), 0.6em 0em var(--grain-china-corner-color), 4.0em 0em var(--grain-china-corner-color), 4.2em 0em var(--grain-china-corner-color), 4.4em 0em var(--grain-china-corner-color), 4.6em 0em var(--grain-china-corner-color), 4.8em 0em var(--grain-china-corner-color), 5.2em 0em var(--grain-china-corner-color), 
+      0em 0.2em var(--grain-china-corner-color), 0.8em 0.2em var(--grain-china-corner-color), 2.0em 0.2em var(--grain-china-corner-color), 2.2em 0.2em var(--grain-china-corner-color), 2.4em 0.2em var(--grain-china-corner-color), 2.6em 0.2em var(--grain-china-corner-color), 4.0em 0.2em var(--grain-china-corner-color), 
+      0em 0.4em var(--grain-china-corner-color), 0.8em 0.4em var(--grain-china-corner-color), 2.0em 0.4em var(--grain-china-corner-color), 2.8em 0.4em var(--grain-china-corner-color), 4.0em 0.4em var(--grain-china-corner-color), 
+      0em 0.6em var(--grain-china-corner-color), 2.0em 0.6em var(--grain-china-corner-color), 2.8em 0.6em var(--grain-china-corner-color), 3.4em 0.6em var(--grain-china-corner-color), 3.6em 0.6em var(--grain-china-corner-color), 4.0em 0.6em var(--grain-china-corner-color), 4.4em 0.6em var(--grain-china-corner-color), 
+      0.2em 0.8em var(--grain-china-corner-color), 0.4em 0.8em var(--grain-china-corner-color), 0.6em 0.8em var(--grain-china-corner-color), 0.8em 0.8em var(--grain-china-corner-color), 1.0em 0.8em var(--grain-china-corner-color), 1.2em 0.8em var(--grain-china-corner-color), 1.4em 0.8em var(--grain-china-corner-color), 1.6em 0.8em var(--grain-china-corner-color), 2.0em 0.8em var(--grain-china-corner-color), 2.4em 0.8em var(--grain-china-corner-color), 2.6em 0.8em var(--grain-china-corner-color), 3.4em 0.8em var(--grain-china-corner-color), 4.0em 0.8em var(--grain-china-corner-color), 4.6em 0.8em var(--grain-china-corner-color), 
+      2.0em 1.0em var(--grain-china-corner-color), 3.4em 1.0em var(--grain-china-corner-color), 4.0em 1.0em var(--grain-china-corner-color), 4.6em 1.0em var(--grain-china-corner-color), 
+      0.8em 1.2em var(--grain-china-corner-color), 3.4em 1.2em var(--grain-china-corner-color), 4.2em 1.2em var(--grain-china-corner-color), 4.4em 1.2em var(--grain-china-corner-color), 
+      0.8em 1.4em var(--grain-china-corner-color), 1.4em 1.4em var(--grain-china-corner-color), 1.6em 1.4em var(--grain-china-corner-color), 1.8em 1.4em var(--grain-china-corner-color), 2.0em 1.4em var(--grain-china-corner-color), 2.2em 1.4em var(--grain-china-corner-color), 2.4em 1.4em var(--grain-china-corner-color), 2.6em 1.4em var(--grain-china-corner-color), 3.4em 1.4em var(--grain-china-corner-color), 
+      0.8em 1.6em var(--grain-china-corner-color), 1.4em 1.6em var(--grain-china-corner-color), 2.6em 1.6em var(--grain-china-corner-color), 3.4em 1.6em var(--grain-china-corner-color), 
+      0.8em 1.8em var(--grain-china-corner-color), 2.0em 1.8em var(--grain-china-corner-color), 3.4em 1.8em var(--grain-china-corner-color), 
+      0.2em 2.0em var(--grain-china-corner-color), 0.4em 2.0em var(--grain-china-corner-color), 0.8em 2.0em var(--grain-china-corner-color), 1.2em 2.0em var(--grain-china-corner-color), 1.4em 2.0em var(--grain-china-corner-color), 1.6em 2.0em var(--grain-china-corner-color), 2.0em 2.0em var(--grain-china-corner-color), 2.4em 2.0em var(--grain-china-corner-color), 2.6em 2.0em var(--grain-china-corner-color), 2.8em 2.0em var(--grain-china-corner-color), 3.0em 2.0em var(--grain-china-corner-color), 3.2em 2.0em var(--grain-china-corner-color), 
+      0.2em 2.2em var(--grain-china-corner-color), 0.8em 2.2em var(--grain-china-corner-color), 2.0em 2.2em var(--grain-china-corner-color), 
+      0.2em 2.4em var(--grain-china-corner-color), 0.8em 2.4em var(--grain-china-corner-color), 1.4em 2.4em var(--grain-china-corner-color), 2.6em 2.4em var(--grain-china-corner-color),    
+      0.2em 2.6em var(--grain-china-corner-color), 0.8em 2.6em var(--grain-china-corner-color), 1.4em 2.6em var(--grain-china-corner-color), 1.6em 2.6em var(--grain-china-corner-color), 1.8em 2.6em var(--grain-china-corner-color), 2.0em 2.6em var(--grain-china-corner-color), 2.2em 2.6em var(--grain-china-corner-color), 2.6em 2.6em var(--grain-china-corner-color), 3.0em 2.6em var(--grain-china-corner-color), 3.2em 2.6em var(--grain-china-corner-color), 
+      0.4em 2.8em var(--grain-china-corner-color), 0.6em 2.8em var(--grain-china-corner-color), 2.6em 2.8em var(--grain-china-corner-color), 3.4em 2.8em var(--grain-china-corner-color), 
+      2.0em 3.0em var(--grain-china-corner-color), 2.6em 3.0em var(--grain-china-corner-color), 3.4em 3.0em var(--grain-china-corner-color), 
+      2.0em 3.2em var(--grain-china-corner-color), 2.6em 3.2em var(--grain-china-corner-color), 3.4em 3.2em var(--grain-china-corner-color), 
+      0.6em 3.4em var(--grain-china-corner-color), 0.8em 3.4em var(--grain-china-corner-color), 1.0em 3.4em var(--grain-china-corner-color), 1.2em 3.4em var(--grain-china-corner-color), 1.4em 3.4em var(--grain-china-corner-color), 1.6em 3.4em var(--grain-china-corner-color), 1.8em 3.4em var(--grain-china-corner-color), 2.8em 3.4em var(--grain-china-corner-color), 3.0em 3.4em var(--grain-china-corner-color), 3.2em 3.4em var(--grain-china-corner-color), 3.4em 3.4em var(--grain-china-corner-color), 
+      0.6em 3.6em var(--grain-china-corner-color), 3.6em 3.6em var(--grain-china-corner-color), 
+      0.6em 3.8em var(--grain-china-corner-color), 
+      0em 4.0em var(--grain-china-corner-color), 0.2em 4.0em var(--grain-china-corner-color), 0.6em 4.0em var(--grain-china-corner-color), 1.0em 4.0em var(--grain-china-corner-color), 
+      0em 4.2em var(--grain-china-corner-color), 0.6em 4.2em var(--grain-china-corner-color), 1.2em 4.2em var(--grain-china-corner-color), 
+      0em 4.4em var(--grain-china-corner-color), 0.6em 4.4em var(--grain-china-corner-color), 1.2em 4.4em var(--grain-china-corner-color), 
+      0em 4.6em var(--grain-china-corner-color), 0.8em 4.6em var(--grain-china-corner-color), 1.0em 4.6em var(--grain-china-corner-color), 
+      0em 4.8em var(--grain-china-corner-color),
+      0em 5.2em var(--grain-china-corner-color);
+  }
+  .corner6:after {
+    box-shadow:
+      0.6em 0em var(--grain-china-corner-color), 0.8em 0em var(--grain-china-corner-color), 1.4em 0em var(--grain-china-corner-color), 1.6em 0em var(--grain-china-corner-color), 2.4em 0em var(--grain-china-corner-color), 2.6em 0em var(--grain-china-corner-color), 
+      0.6em 0.2em var(--grain-china-corner-color), 1.0em 0.2em var(--grain-china-corner-color), 1.2em 0.2em var(--grain-china-corner-color), 1.6em 0.2em var(--grain-china-corner-color), 2.2em 0.2em var(--grain-china-corner-color), 2.8em 0.2em var(--grain-china-corner-color), 4.2em 0.2em var(--grain-china-corner-color), 
+      0.8em 0.4em var(--grain-china-corner-color), 1.6em 0.4em var(--grain-china-corner-color), 2.4em 0.4em var(--grain-china-corner-color), 2.8em 0.4em var(--grain-china-corner-color), 3.2em 0.4em var(--grain-china-corner-color), 3.4em 0.4em var(--grain-china-corner-color), 3.6em 0.4em var(--grain-china-corner-color), 4.0em 0.4em var(--grain-china-corner-color), 4.4em 0.4em var(--grain-china-corner-color), 4.8em 0.4em var(--grain-china-corner-color), 5.2em 0.4em var(--grain-china-corner-color), 
+      0em 0.6em var(--grain-china-corner-color), 0.2em 0.6em var(--grain-china-corner-color), 1.0em 0.6em var(--grain-china-corner-color), 1.6em 0.6em var(--grain-china-corner-color), 2.8em 0.6em var(--grain-china-corner-color), 4.2em 0.6em var(--grain-china-corner-color),
+      0em 0.8em var(--grain-china-corner-color), 0.4em 0.8em var(--grain-china-corner-color), 1.6em 0.8em var(--grain-china-corner-color), 2.6em 0.8em var(--grain-china-corner-color),
+      0.2em 1.0em var(--grain-china-corner-color), 0.6em 1.0em var(--grain-china-corner-color), 0.8em 1.0em var(--grain-china-corner-color), 1.0em 1.0em var(--grain-china-corner-color), 1.2em 1.0em var(--grain-china-corner-color), 1.6em 1.0em var(--grain-china-corner-color), 2.0em 1.0em var(--grain-china-corner-color), 2.2em 1.0em var(--grain-china-corner-color), 2.4em 1.0em var(--grain-china-corner-color), 
+      0.2em 1.2em var(--grain-china-corner-color), 1.6em 1.2em var(--grain-china-corner-color), 
+      0em 1.4em var(--grain-china-corner-color), 1.0em 1.4em var(--grain-china-corner-color), 1.8em 1.4em var(--grain-china-corner-color), 
+      0em 1.6em var(--grain-china-corner-color), 0.2em 1.6em var(--grain-china-corner-color), 0.4em 1.6em var(--grain-china-corner-color), 0.6em 1.6em var(--grain-china-corner-color), 1.0em 1.6em var(--grain-china-corner-color), 2.0em 1.6em var(--grain-china-corner-color), 
+      1.0em 1.8em var(--grain-china-corner-color), 1.4em 1.8em var(--grain-china-corner-color), 2.0em 1.8em var(--grain-china-corner-color), 
+      1.0em 2.0em var(--grain-china-corner-color), 1.6em 2.0em var(--grain-china-corner-color), 1.8em 2.0em var(--grain-china-corner-color), 2.0em 2.0em var(--grain-china-corner-color), 
+      0.2em 2.2em var(--grain-china-corner-color), 1.0em 2.2em var(--grain-china-corner-color), 2.2em 2.2em var(--grain-china-corner-color), 2.6em 2.2em var(--grain-china-corner-color), 
+      0em 2.4em var(--grain-china-corner-color), 0.4em 2.4em var(--grain-china-corner-color), 1.0em 2.4em var(--grain-china-corner-color), 
+      0em 2.6em var(--grain-china-corner-color), 0.8em 2.6em var(--grain-china-corner-color), 2.2em 2.6em var(--grain-china-corner-color), 
+      0.2em 2.8em var(--grain-china-corner-color), 0.4em 2.8em var(--grain-china-corner-color), 0.6em 2.8em var(--grain-china-corner-color), 
+      0.4em 3.2em var(--grain-china-corner-color), 
+      0.4em 3.4em var(--grain-china-corner-color), 
+      0.4em 3.6em var(--grain-china-corner-color), 
+      0.4em 4.0em var(--grain-china-corner-color), 
+      0.2em 4.2em var(--grain-china-corner-color), 0.6em 4.2em var(--grain-china-corner-color), 
+      0.4em 4.4em var(--grain-china-corner-color), 
+      0.4em 4.8em var(--grain-china-corner-color), 
+      0.4em 5.2em var(--grain-china-corner-color);
+  }
+  
+  /*--------------------------------------------------------*/
+/* Tooltip 样式 */
+.tooltip.basic-theme {
+  font-size: 14px;
+  color: #2b3f60;
+  position: fixed;
+  width: 300px;
+  min-height: 180px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 1000;
+  
+  box-shadow: 0 8px 16px -8px rgba(0,0,0,0.4);
+  text-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border: 1px solid rgba(255, 255, 255, .25);
+  background-color: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(15px);
+  border-radius: 8px;
+  
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+/* 上方箭头 */
+.tooltip.basic-theme.top::after {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  z-index: -1;
+}
+
+/* 下方箭头 */
+.tooltip.basic-theme.bottom::after {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  z-index: -1;
+}
+
+.tooltip .profile-image {
+  width: 120px;
+  height: 120px;
+  box-sizing: border-box;
+  padding: 4px;
+  background: white;
+  border-radius: 100%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  cursor: pointer;
+  margin-top: 24px;
+  margin-bottom: 16px;
+  object-fit: cover;
+  }
+  
+  .tooltip .profile-image-none {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  color: #8cbab7;
+  font-size: 24px;
+  background: white;
+  border-radius: 100%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  cursor: pointer;
+  margin-top: 24px;
+  margin-bottom: 16px;
+  }
+
+
+/*------------------控制node的大小高低--------------------*/
+.node-container {
+  width: calc(var(--width) * 1px);
+  height: calc((var(--height) + 20) * 1px);
+  padding-top: calc(var(--imageDiffVert) * 1px);
+
+}
+
+.node-card {
+  border: 1px solid #E4E2E9;
+  background: #E4E2E9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  box-shadow:
+  -1px 1px var(--blur) 1px rgba(0,0,0,0.10),
+  -2px 2px var(--blur) 1px rgba(0,0,0,0.09),
+  -3px 3px var(--blur) 1px rgba(0,0,0,0.08),
+  -4px 4px var(--blur) 1px rgba(0,0,0,0.07),
+  -5px 5px var(--blur) 1px rgba(0,0,0,0.06),
+  -6px 6px var(--blur) 1px rgba(0,0,0,0.05),
+  -7px 7px var(--blur) 1px rgba(0,0,0,0.04),
+  -8px 8px var(--blur) 1px rgba(0,0,0,0.03),
+  -9px 9px var(--blur) 1px rgba(0,0,0,0.03),
+  -10px 10px var(--blur) 1px rgba(0,0,0,0.03),
+  -11px 11px var(--blur) 1px rgba(0,0,0,0.03),
+  -12px 12px var(--blur) 1px rgba(0,0,0,0.02),
+  -13px 13px var(--blur) 1px rgba(0,0,0,0.02),
+  -14px 14px var(--blur) 1px rgba(0,0,0,0.01),
+  -15px 15px var(--blur) 1px rgba(0,0,0,0.01),
+  -16px 16px var(--blur) 1px rgba(0,0,0,0.01)
+;
+}
+
+.node-card.highlighted {
+  border-color: #E27396;
+  background: #f07b3f;
+}
+
+.node-content {
+  font-family: 'CustomFont', sans-serif;
+  width: calc(var(--width) * 1px);
+  height: calc((var(--height) - 70) * 1px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 17px;
+  color: var(--textColor);
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+}
+
+.node-decor-top, .node-decor-bottom {
+  height: 15px;
+  overflow: hidden;
+}
+
+.node-decor-path {
+  fill: var(--titleColor, #6a2c70);
+}
+
+.warning-icon {
+  position: absolute;
+  top: 15px;
+  left: 6px;
+  width: 15px;
+  height: 15px;
+  background-color: rgb(86, 86, 86);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 10px;
+}
+/* ------------------- toolbar --------------------- */
+.toolbar {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+
+  color:#40514e;
+
+  box-shadow: 0 8px 16px -8px rgba(0,0,0,0.4);
+  text-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  
+  border: 1px solid rgba(255, 255, 255, .25);
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.25);
+  
+  backdrop-filter: blur(15px);
+ 
+  border-radius: 3px;
+  z-index: 101;
+  transition: all 0.3s ease; 
+  flex-direction: column;
+  height: 40px; 
+  justify-content: space-between; /* 确保子元素在垂直方向上分布 */
+
+  /* box-shadow: 4px 0 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease; 确保阴影也有过渡效果 */
+}
+
+.toolbar.active {
+  opacity: 1; /* 显示时完全不透明 */
+  pointer-events: auto; /* 启用交互 */
+}
+
+/* 输入框和按钮容器 */
+.zp-info-group {
+  display: flex;
+  gap: 10px; /* 元素间间距 */
+  bottom: 5px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  flex-grow: 0;
+}
+
+/* 输入框样式 */
+.search-bar{
+  color: var(--text-color);
+  position: relative;
+  height: 24px;
+  width: 185px;
+  border-radius: 16.667px;
+  border: none;
+  background-color: var(--neutral);
+  outline: none;
+  padding-left: 10px; 
+}
+
+.search-bar::placeholder{
+  color: var(--text-color);
+}
+
+/* 按钮样式 */
+.filter-btn {
+  color:var(--text-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: color 0.3s;
+  background-color: transparent;
+  /* white-space: nowrap; 防止按钮文字换行 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.filter-btn:hover {
+  color: #c9ddf9;
+}
+
+/* 结果列表样式 */
+.result-list {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  height: 200px; 
+  width:100%;
+  overflow-y: auto; 
+  overflow-x: hidden; 
+  flex-grow: 1; /* 让结果列表占据剩余空间 */
+}
+
+.result-list.active {
+  max-height: 200px;
+}
+
+/* 确保 .result-list 继承全局样式 */
+.result-list::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+
+.result-list::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0);
+}
+
+.result-list::-webkit-scrollbar-thumb {
+  background-color: #000000;
+}
+
+.result-item {
+  padding: 12px 20px;
+  /* border-bottom: 1px solid #f0f0f0; */
+  cursor: pointer;
+  display: flex; /* 使用 flexbox 布局 */
+  justify-content: space-between; /* 让名字和数字分别在左右两侧 */
+  align-items: center; /* 垂直居中对齐 */
+}
+
+
+
+.result-item:last-child {
+  border-bottom: none;
+}
+
+.result-item:hover {
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+
+.toolbar.extended {
+  bottom: 40px; 
+  left: 50%; 
+  transform: translateX(-50%); 
+  height: 248px; 
+  justify-content: space-between; /* 延伸后保持子元素分布 */
+}
+
+/* -------------------------------------------------- */
+.card {
+  perspective: 150rem;
+  height: 10rem;
+  width: 15rem;
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+}
+.card__side {
+  height: 18rem;
+  transition: all 0.8s ease;
+  position: absolute;
+
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 6rem;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+
+  overflow: hidden;
+  box-shadow:
+  -1px 1px var(--blur) 1px rgba(0,0,0,0.10),
+  -2px 2px var(--blur) 1px rgba(0,0,0,0.09),
+  -3px 3px var(--blur) 1px rgba(0,0,0,0.08),
+  -4px 4px var(--blur) 1px rgba(0,0,0,0.07),
+  -5px 5px var(--blur) 1px rgba(0,0,0,0.06),
+  -6px 6px var(--blur) 1px rgba(0,0,0,0.05),
+  -7px 7px var(--blur) 1px rgba(0,0,0,0.04),
+  -8px 8px var(--blur) 1px rgba(0,0,0,0.03),
+  -9px 9px var(--blur) 1px rgba(0,0,0,0.03),
+  -10px 10px var(--blur) 1px rgba(0,0,0,0.03),
+  -11px 11px var(--blur) 1px rgba(0,0,0,0.03),
+  -12px 12px var(--blur) 1px rgba(0,0,0,0.02),
+  -13px 13px var(--blur) 1px rgba(0,0,0,0.02),
+  -14px 14px var(--blur) 1px rgba(0,0,0,0.01),
+  -15px 15px var(--blur) 1px rgba(0,0,0,0.01),
+  -16px 16px var(--blur) 1px rgba(0,0,0,0.01)
+;
+}
+.card__side--front {
+  background-color: #1c1c1c;
+}
+.card__side--back {
+  transform: rotateY(180deg);
+  background-color: #1c1c1c;
+}
+.card:hover .card__side--front {
+  transform: rotateY(-180deg);
+}
+.card:hover .card__side--back {
+  transform: rotateY(0deg);
+}
+
+/* ============hill============= */
+.p-summary {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  cursor: pointer;
+  text-align: center;
+  width: 100%; 
+  max-width: 1200px;
+}
+
+
+.p-canvas-webgl {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+}
+
+.wx-qrcode {
+  width: 90px;
+  height: 90px;
+  margin-top: 60px;
+  opacity: 0; /* 默认隐藏 */
+  transition: opacity 0.3s ease; /* 平滑过渡 */
+  /* 确保图片不被其他元素遮挡 */
+  position: relative;
+  z-index: 10;
+}
+
+.p-summary:hover .wx-qrcode {
+  opacity: 1;
+  color:red;
+}
+/* -------------------------------------------------- */
+.index-content {
+  position: absolute;
+  margin-top: 35px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 30px;
+  overflow: hidden;
+  font-family: sans-serif;
+  font-size: 20px;
+  line-height: 30px;
+  color: #000;
+  font-weight: 120;
+  cursor: pointer; /* 提示可点击 */
+}
+
+.index-content__container {
+  overflow: hidden;
+  height: 30px;
+  padding: 0 40px;
+}
+
+.index-content__container__text {
+  display: inline;
+  float: left;
+  margin: 0;
+}
+
+.index-content__container__list {
+  margin-top: 0;
+  text-align: center;
+  list-style: none;
+  padding: 0;
+  -webkit-animation: change 12.5s infinite ease-in-out;
+  animation: change 12.5s infinite ease-in-out;
+}
+
+.index-content__container__list__item {
+  line-height: 30px;
+  margin: 0;
+  height: 30px;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* 修正关键帧动画 - 确保最后一帧回到起点 */
+@keyframes change {
+  0%, 15% {
+      transform: translateY(0);
+  }
+  20%, 35% {
+      transform: translateY(-30px);
+  }
+  40%, 55% {
+      transform: translateY(-60px);
+  }
+  60%, 75% {
+      transform: translateY(-90px);
+  }
+  80%, 95% {
+      transform: translateY(-120px);
+  }
+  100% { /* 最后一帧必须是100% */
+      transform: translateY(0);
+  }
+}
+
+/* 控制每个列表项的显示时机 */
+.index-content__container__list__item:nth-child(1) {
+  animation: fadeInOut 12.5s infinite;
+  animation-delay: 0s;
+}
+
+.index-content__container__list__item:nth-child(2) {
+  animation: fadeInOut 12.5s infinite;
+  animation-delay: 2.5s;
+}
+
+.index-content__container__list__item:nth-child(3) {
+  animation: fadeInOut 12.5s infinite;
+  animation-delay: 5s;
+}
+
+.index-content__container__list__item:nth-child(4) {
+  animation: fadeInOut 12.5s infinite;
+  animation-delay: 7.5s;
+}
+
+.index-content__container__list__item:nth-child(5) {
+  animation: fadeInOut 12.5s infinite;
+  animation-delay: 10s;
+}
+
+@keyframes fadeInOut {
+  0%, 20% { opacity: 1; }
+  25%, 100% { opacity: 0; }
+}

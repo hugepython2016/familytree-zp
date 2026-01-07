@@ -1,0 +1,152 @@
+
+/* ---------------------------------------------- */
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    top: 0;
+    overflow: auto;
+}
+
+.form-container form {
+    width: 100%;
+    max-width: 800px;
+
+    max-height: 75vh;
+}
+
+.form-container form .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.form-container form .row .col {
+    flex: 1 1 250px;
+    width: 100%;
+}
+
+.col .title {
+    font-size: 20px;
+    color: #5e8f94;
+    padding-bottom: 5px;
+}
+
+/* 默认label在左侧的样式 */
+.col .inputBox {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.col .inputBox.label-top {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.col .inputBox label {
+    width: 120px; /* 固定label宽度 */
+    flex-shrink: 0; /* 防止label被压缩 */
+    margin-bottom: 0;
+}
+
+.col .inputBox.label-top label {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.form-container input, 
+.form-container select, 
+.form-container textarea {
+    flex: 1;
+    min-width: 0; /* 允许缩小 */
+    padding: 10px 15px;
+    border: 1px solid #f0f0f0;
+    background-color: #f0f0f0;
+    font-size: 15px;
+    width: 100%; /* 确保填满剩余空间 */
+}
+
+.form-container textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-container input:focus, 
+.form-container select:focus, 
+.form-container textarea:focus {
+    border: 1px solid rgba(0,0,0,0.6);
+    background-color: #fff;
+    outline: none;
+}
+
+.col .flex {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+}
+
+.col .flex .inputBox {
+    flex: 1;
+    margin-top: 5px;
+}
+
+.col .inputBox img {
+    height: 34px;
+    margin-top: 5px;
+    filter: drop-shadow(0 0 1px #000);
+}
+
+.form-container form .submit_btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 17px;
+    background: rgba(0,0,0,0.8);
+    color: #fff;
+    margin-top: 15px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    border: none;
+    border-radius: 4px;
+}
+
+.form-container form .submit_btn:hover {
+    background: rgba(0,0,0,0.5);
+}
+
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+    display: none;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .col .inputBox {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .col .inputBox label {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+    
+    .col .flex {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+.modal__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+}
