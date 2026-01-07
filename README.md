@@ -2,7 +2,7 @@
 To remember every person is to complete history。A simple tree-structured family genealogy website that helps wanderers find their home.
 
 <div align="center">
-<img src="https://raw.githubusercontent.com/hugepython2016/familytree-zp/r1.png" width="400">
+<img src="https://user-images.githubusercontent.com/hugepython2016/familytree-zp/r1.png" width="400">
 </div>
 
 <div align="center">
