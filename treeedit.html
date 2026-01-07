@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>亲属关系CSV编辑器（V2）</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- Tailwind配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#475569',
+                        success: '#10b981',
+                        danger: '#ef4444',
+                        neutral: '#f3f4f6',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .row-hover {
+                @apply hover:bg-blue-50 transition-colors duration-200;
+            }
+            .editable-cell {
+                @apply focus:ring-2 focus:ring-primary focus:outline-none min-h-[2rem] px-2 py-1 w-full;
+            }
+            .menu-item-active {
+                @apply bg-primary/10 text-primary;
+            }
+            .highlight-row {
+                @apply bg-green-50 animate-pulse duration-1000;
+            }
+            .table-header-sticky {
+                @apply sticky top-0 z-10 bg-gray-50;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- 头部区域 -->
+        <header class="mb-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                <div>
+                    <h1 class="text-[clamp(1.5rem,3vw,2.25rem)] font-bold text-gray-800 mb-2">亲属关系CSV编辑器（V2）</h1>
+                    <p class="text-gray-600">支持智能分组插入、数据导入导出、在线编辑</p>
+                </div>
+                <div class="mt-4 md:mt-0 text-sm text-gray-500">
+                    <span id="dataCount">当前数据：1 行</span>
+                    <span class="mx-2">|</span>
+                    <span id="lastEditTime">最后编辑：刚刚</span>
+                </div>
+            </div>
+            
+            <!-- 功能按钮区 -->
+            <div class="flex flex-wrap gap-3 mb-6">
+                <button id="addRowBtn" class="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-all shadow-sm hover:shadow">
+                    <i class="fa fa-plus"></i> 新增空白行
+                </button>
+                <button id="exportBtn" class="flex items-center gap-2 bg-success text-white px-4 py-2 rounded-lg hover:bg-success/90 transition-all shadow-sm hover:shadow">
+                    <i class="fa fa-download"></i> 导出CSV
+                </button>
+                <button id="importBtn" class="flex items-center gap-2 bg-secondary text-white px-4 py-2 rounded-lg hover:bg-secondary/90 transition-all shadow-sm hover:shadow">
+                    <i class="fa fa-upload"></i> 导入CSV
+                </button>
+                <input type="file" id="fileInput" accept=".csv" class="hidden">
+                <button id="templateBtn" class="flex items-center gap-2 bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-all shadow-sm hover:shadow">
+                    <i class="fa fa-file-text-o"></i> 下载模板
+                </button>
+                <button id="clearBtn" class="flex items-center gap-2 bg-danger text-white px-4 py-2 rounded-lg hover:bg-danger/90 transition-all shadow-sm hover:shadow ml-auto">
+                    <i class="fa fa-trash"></i> 清空表格
+                </button>
+            </div>
+            
+            <!-- 提示框 -->
+            <div class="bg-blue-50 border-l-4 border-primary p-4 rounded-r-md mb-6">
+                <p class="text-sm text-gray-700"><i class="fa fa-lightbulb-o text-primary mr-2"></i> 
+                    核心操作：<b>右键行弹出菜单</b> → 增加子女（插入到同parentId组最后一行）/增加配偶（插入到同spouseId组最后一行）；
+                    所有字段支持直接点击编辑，ID自动生成不可修改
+                </p>
+            </div>
+        </header>
+        
+        <!-- 表格容器（带滚动+固定表头） -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="overflow-x-auto max-h-[70vh]">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead>
+                        <tr class="table-header-sticky">
+                            <!-- 序号列 -->
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-12 border-b border-gray-200">序号</th>
+                            <!-- 数据列（按指定顺序） -->
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">level</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">id</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">parentId</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">spouseId</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">isSpouse</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">name</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">otherName</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">relation</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">local</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">success</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">simpleStory</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">databaseId</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">out_spouseId</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">state</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">photo</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">moreinfo</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">born</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">dead</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">sex</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">ischeck</th>
+                            <!-- 操作列 -->
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-24 border-b border-gray-200">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" class="bg-white divide-y divide-gray-200">
+                        <!-- 表格内容由JS动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- 右键菜单（默认隐藏） -->
+        <div id="contextMenu" class="fixed hidden bg-white shadow-lg rounded-md border border-gray-200 py-1 z-50 w-40">
+            <a href="#" id="menuAddChild" class="block px-4 py-2 text-sm text-gray-700 hover:menu-item-active transition-colors">
+                <i class="fa fa-child mr-2"></i>增加子女
+            </a>
+            <a href="#" id="menuAddSpouse" class="block px-4 py-2 text-sm text-gray-700 hover:menu-item-active transition-colors">
+                <i class="fa fa-heart mr-2"></i>增加配偶
+            </a>
+            <div class="border-t border-gray-200 my-1"></div>
+            <a href="#" id="menuDuplicateRow" class="block px-4 py-2 text-sm text-gray-700 hover:menu-item-active transition-colors">
+                <i class="fa fa-copy mr-2"></i>复制当前行
+            </a>
+            <a href="#" id="menuDeleteRow" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors">
+                <i class="fa fa-trash mr-2"></i>删除当前行
+            </a>
+        </div>
+        
+        <!-- 操作提示弹窗 -->
+        <div id="toast" class="fixed bottom-6 right-6 hidden bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg z-50">
+            <span id="toastText">操作成功</span>
+        </div>
+    </div>
+
+    <script>
+        // 1. 基础配置
+        const FIELD_LIST = [
+            'level', 'id', 'parentId', 'spouseId', 'isSpouse', 
+            'name', 'otherName', 'relation', 'local', 'success', 
+            'simpleStory', 'databaseId', 'out_spouseId', 'state', 
+            'photo', 'moreinfo', 'born', 'dead', 'sex', 'ischeck'
+        ];
+        let tableData = []; // 存储表格数据
+        let currentRightClickIndex = -1; // 当前右键点击的行索引
+        let lastEditTimestamp = new Date(); // 最后编辑时间
+
+        // 2. 工具函数
+        /**
+         * 生成唯一ID（基于时间戳+随机字符串）
+         */
+        function generateUniqueId() {
+            const timestamp = Date.now().toString(36);
+            const randomStr = Math.random().toString(36).substr(2, 6);
+            return `${timestamp}_${randomStr}`;
+        }
+
+        /**
+         * 解析CSV行（处理带引号的字段）
+         */
+        function parseCSVLine(line) {
+            const values = [];
+            let currentValue = '';
+            let inQuotes = false;
+
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                if (char === '"') {
+                    // 处理双引号转义（""表示一个"）
+                    if (i < line.length - 1 && line[i + 1] === '"') {
+                        currentValue += '"';
+                        i++; // 跳过下一个引号
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (char === ',' && !inQuotes) {
+                    values.push(currentValue);
+                    currentValue = '';
+                } else {
+                    currentValue += char;
+                }
+            }
+            // 添加最后一个字段
+            values.push(currentValue);
+            return values;
+        }
+
+        /**
+         * 格式化CSV字段（处理含逗号/引号的内容）
+         */
+        function formatCSVField(value) {
+            if (typeof value !== 'string') value = String(value);
+            // 包含逗号或引号需要用双引号包裹
+            if (value.includes(',') || value.includes('"')) {
+                return `"${value.replace(/"/g, '""')}"`;
+            }
+            return value;
+        }
+
+        /**
+         * 显示操作提示
+         */
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            const toastText = document.getElementById('toastText');
+            
+            toastText.textContent = message;
+            toast.className = isError 
+                ? 'fixed bottom-6 right-6 bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg z-50'
+                : 'fixed bottom-6 right-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+            
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 2000);
+        }
+
+        /**
+         * 更新数据统计和编辑时间
+         */
+        function updateDataStats() {
+            document.getElementById('dataCount').textContent = `当前数据：${tableData.length} 行`;
+            
+            const now = new Date();
+            const diffMinutes = Math.floor((now - lastEditTimestamp) / (1000 * 60));
+            let timeText = '刚刚';
+            if (diffMinutes >= 1 && diffMinutes < 60) {
+                timeText = `${diffMinutes} 分钟前`;
+            } else if (diffMinutes >= 60 && diffMinutes < 1440) {
+                timeText = `${Math.floor(diffMinutes / 60)} 小时前`;
+            } else if (diffMinutes >= 1440) {
+                timeText = `${Math.floor(diffMinutes / 1440)} 天前`;
+            }
+            document.getElementById('lastEditTime').textContent = `最后编辑：${timeText}`;
+            
+            lastEditTimestamp = now;
+        }
+
+        // 3. 核心数据操作
+        /**
+         * 初始化表格（默认添加一行基础数据）
+         */
+        function initTable() {
+            const defaultRow = {
+                level: '1',
+                id: generateUniqueId(),
+                parentId: '',
+                spouseId: '',
+                isSpouse: '',
+                name: '',
+                otherName: '',
+                relation: '',
+                local: '',
+                success: '',
+                simpleStory: '',
+                databaseId: '',
+                out_spouseId: '',
+                state: '',
+                photo: '',
+                moreinfo: '',
+                born: '',
+                dead: '',
+                sex: '',
+                ischeck: ''
+            };
+            tableData = [defaultRow];
+            renderTable();
+            updateDataStats();
+            showToast('表格初始化完成');
+        }
+
+        /**
+         * 渲染表格到页面
+         */
+        function renderTable() {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+
+            tableData.forEach((row, index) => {
+                const tr = document.createElement('tr');
+                tr.className = 'row-hover';
+                tr.dataset.index = index;
+
+                // 3.1 序号列
+                const indexTd = document.createElement('td');
+                indexTd.className = 'px-3 py-2 whitespace-nowrap text-sm text-gray-500';
+                indexTd.textContent = index + 1;
+                tr.appendChild(indexTd);
+
+                // 3.2 数据列（按FIELD_LIST顺序）
+                FIELD_LIST.forEach(field => {
+                    const td = document.createElement('td');
+                    td.className = 'px-3 py-2 whitespace-nowrap';
+
+                    const cell = document.createElement('div');
+                    cell.className = 'editable-cell';
+                    cell.contentEditable = true;
+                    cell.textContent = row[field] || '';
+                    cell.dataset.field = field;
+                    cell.dataset.index = index;
+
+                    // ID字段不可编辑
+                    if (field === 'id') {
+                        cell.contentEditable = false;
+                        cell.className = 'px-2 py-1 w-full bg-gray-50 text-gray-700 cursor-default text-sm';
+                    }
+
+                    // 失去焦点时保存数据
+                    cell.addEventListener('blur', (e) => {
+                        const editIndex = parseInt(e.target.dataset.index);
+                        const editField = e.target.dataset.field;
+                        const oldValue = tableData[editIndex][editField];
+                        const newValue = e.target.textContent.trim();
+                        
+                        if (oldValue !== newValue) {
+                            tableData[editIndex][editField] = newValue;
+                            updateDataStats();
+                            showToast(`已更新【${FIELD_LIST[FIELD_LIST.indexOf(editField)]}】字段`);
+                        }
+                    });
+
+                    td.appendChild(cell);
+                    tr.appendChild(td);
+                });
+
+                // 3.3 操作列（删除/移动）
+                const actionTd = document.createElement('td');
+                actionTd.className = 'px-3 py-2 whitespace-nowrap text-sm font-medium';
+
+                // 删除按钮
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'text-danger hover:text-red-800 mr-3';
+                deleteBtn.innerHTML = '<i class="fa fa-trash"></i>';
+                deleteBtn.title = '删除当前行';
+                deleteBtn.addEventListener('click', () => deleteRow(index));
+
+                // 移动按钮（上移/下移）
+                const moveUpBtn = document.createElement('button');
+                moveUpBtn.className = 'text-primary hover:text-blue-800 mr-3';
+                moveUpBtn.innerHTML = '<i class="fa fa-arrow-up"></i>';
+                moveUpBtn.title = '上移一行';
+                moveUpBtn.addEventListener('click', () => moveRow(index, -1));
+                if (index === 0) moveUpBtn.disabled = true;
+
+                const moveDownBtn = document.createElement('button');
+                moveDownBtn.className = 'text-primary hover:text-blue-800';
+                moveDownBtn.innerHTML = '<i class="fa fa-arrow-down"></i>';
+                moveDownBtn.title = '下移一行';
+                moveDownBtn.addEventListener('click', () => moveRow(index, 1));
+                if (index === tableData.length - 1) moveDownBtn.disabled = true;
+
+                actionTd.appendChild(deleteBtn);
+                actionTd.appendChild(moveUpBtn);
+                actionTd.appendChild(moveDownBtn);
+                tr.appendChild(actionTd);
+
+                // 3.4 右键菜单事件
+                tr.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    currentRightClickIndex = index;
+                    // 定位菜单（避免超出屏幕）
+                    const menu = document.getElementById('contextMenu');
+                    const menuWidth = menu.offsetWidth || 160;
+                    const menuHeight = menu.offsetHeight || 120;
+                    const screenWidth = window.innerWidth;
+                    const screenHeight = window.innerHeight;
+
+                    let top = e.clientY;
+                    let left = e.clientX;
+
+                    // 右侧超出屏幕则左对齐
+                    if (left + menuWidth > screenWidth) {
+                        left = screenWidth - menuWidth - 10;
+                    }
+                    // 底部超出屏幕则上对齐
+                    if (top + menuHeight > screenHeight) {
+                        top = screenHeight - menuHeight - 10;
+                    }
+
+                    menu.style.top = `${top}px`;
+                    menu.style.left = `${left}px`;
+                    menu.classList.remove('hidden');
+                });
+
+                tableBody.appendChild(tr);
+            });
+        }
+
+        /**
+         * 新增空白行（添加到表格末尾）
+         */
+        function addBlankRow() {
+            const newRow = {
+                level: '',
+                id: generateUniqueId(),
+                parentId: '',
+                spouseId: '',
+                isSpouse: '',
+                name: '',
+                otherName: '',
+                relation: '',
+                local: '',
+                success: '',
+                simpleStory: '',
+                databaseId: '',
+                out_spouseId: '',
+                state: '',
+                photo: '',
+                moreinfo: '',
+                born: '',
+                dead: '',
+                sex: '',
+                ischeck: ''
+            };
+            tableData.push(newRow);
+            renderTable();
+            updateDataStats();
+            // 滚动到新行并高亮
+            highlightRow(tableData.length - 1);
+            showToast('已新增空白行');
+        }
+
+        /**
+         * 增加子女行（智能插入到同parentId组最后一行下方）
+         */
+        function addChildRow() {
+            if (currentRightClickIndex === -1) return;
+
+            const parentRow = tableData[currentRightClickIndex];
+            const targetParentId = parentRow.id; // 子女的parentId = 右键行的id
+            const parentLevel = parentRow.level ? parseInt(parentRow.level) : 1;
+            const childLevel = parentLevel + 1; // 子女level = 右键行level +1
+
+            // 步骤1：查找所有parentId等于targetParentId的行，获取最后一行的索引
+            let lastSameParentIndex = -1;
+            tableData.forEach((row, index) => {
+                if (row.parentId === targetParentId) {
+                    lastSameParentIndex = index;
+                }
+            });
+
+            // 步骤2：确定插入位置（有同parentId行则插在最后一行后，否则插在右键行后）
+            const insertIndex = lastSameParentIndex !== -1 
+                ? lastSameParentIndex + 1 
+                : currentRightClickIndex + 1;
+
+            // 步骤3：创建子女行数据
+            const childRow = {
+                level: childLevel.toString(),
+                id: generateUniqueId(),
+                parentId: targetParentId,
+                spouseId: '',
+                isSpouse: '',
+                name: '',
+                otherName: '',
+                relation: '',
+                local: '',
+                success: '',
+                simpleStory: '',
+                databaseId: '',
+                out_spouseId: '',
+                state: '',
+                photo: '',
+                moreinfo: '',
+                born: '',
+                dead: '',
+                sex: '',
+                ischeck: ''
+            };
+
+            // 步骤4：插入数据并重新渲染
+            tableData.splice(insertIndex, 0, childRow);
+            renderTable();
+            updateDataStats();
+            // 高亮新插入的行
+            highlightRow(insertIndex);
+            showToast(`已为【${parentRow.name || '未命名'}】添加子女行`);
+        }
+
+        /**
+         * 增加配偶行（智能插入到同spouseId组最后一行下方）
+         */
+        function addSpouseRow() {
+            if (currentRightClickIndex === -1) return;
+
+            const targetRow = tableData[currentRightClickIndex];
+            const targetSpouseId = targetRow.id; // 配偶的spouseId = 右键行的id
+            const targetLevel = targetRow.level || ''; // 配偶level = 右键行level
+            const targetParentId = targetRow.parentId || ''; // 配偶parentId = 右键行parentId
+
+            // 步骤1：查找所有spouseId等于targetSpouseId的行，获取最后一行的索引
+            let lastSameSpouseIndex = -1;
+            tableData.forEach((row, index) => {
+                if (row.spouseId === targetSpouseId) {
+                    lastSameSpouseIndex = index;
+                }
+            });
+
+            // 步骤2：确定插入位置（有同spouseId行则插在最后一行后，否则插在右键行后）
+            const insertIndex = lastSameSpouseIndex !== -1 
+                ? lastSameSpouseIndex + 1 
+                : currentRightClickIndex + 1;
+
+            // 步骤3：创建配偶行数据
+            const spouseRow = {
+                level: targetLevel,
+                id: generateUniqueId(),
+                parentId: targetParentId,
+                spouseId: targetSpouseId,
+                isSpouse: '1', // 配偶行isSpouse固定为1
+                name: '',
+                otherName: '',
+                relation: '',
+                local: '',
+                success: '',
+                simpleStory: '',
+                databaseId: '',
+                out_spouseId: '',
+                state: '',
+                photo: '',
+                moreinfo: '',
+                born: '',
+                dead: '',
+                sex: '',
+                ischeck: ''
+            };
+
+            // 步骤4：插入数据并重新渲染
+            tableData.splice(insertIndex, 0, spouseRow);
+            renderTable();
+            updateDataStats();
+            // 高亮新插入的行
+            highlightRow(insertIndex);
+            showToast(`已为【${targetRow.name || '未命名'}】添加配偶行`);
+        }
+
+        /**
+         * 复制当前行
+         */
+        function duplicateRow() {
+            if (currentRightClickIndex === -1) return;
+
+            const targetRow = tableData[currentRightClickIndex];
+            // 复制行数据（重新生成ID）
+            const duplicatedRow = {
+                ...targetRow,
+                id: generateUniqueId(),
+                name: targetRow.name ? `${targetRow.name}_副本` : '未命名_副本'
+            };
+
+            // 插入到当前行下方
+            const insertIndex = currentRightClickIndex + 1;
+            tableData.splice(insertIndex, 0, duplicatedRow);
+            renderTable();
+            updateDataStats();
+            highlightRow(insertIndex);
+            showToast(`已复制【${targetRow.name || '未命名'}】行`);
+        }
+
+        /**
+         * 删除行
+         */
+        function deleteRow(index) {
+            if (tableData.length <= 1) {
+                showToast('至少保留一行数据，无法删除', true);
+                return;
+            }
+            const rowToDelete = tableData[index];
+            if (confirm(`确定要删除【${rowToDelete.name || '未命名'}】（第${index + 1}行）吗？`)) {
+                tableData.splice(index, 1);
+                renderTable();
+                updateDataStats();
+                showToast(`已删除【${rowToDelete.name || '未命名'}】行`);
+            }
+        }
+
+        /**
+         * 移动行（上移/下移）
+         */
+        function moveRow(index, direction) {
+            const newIndex = index + direction;
+            // 边界判断
+            if (newIndex < 0 || newIndex >= tableData.length) return;
+            
+            const rowName = tableData[index].name || '未命名行';
+            // 交换位置
+            [tableData[index], tableData[newIndex]] = [tableData[newIndex], tableData[index]];
+            renderTable();
+            // 高亮移动后的行
+            highlightRow(newIndex);
+            showToast(`【${rowName}】已${direction === -1 ? '上移' : '下移'}一行`);
+        }
+
+        /**
+         * 高亮指定行（视觉反馈）
+         */
+        function highlightRow(index) {
+            const row = document.querySelector(`tr[data-index="${index}"]`);
+            if (row) {
+                row.classList.add('highlight-row');
+                // 滚动到可视区域
+                row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // 1秒后移除高亮
+                setTimeout(() => {
+                    row.classList.remove('highlight-row');
+                }, 1000);
+            }
+        }
+
+        /**
+         * 导出CSV文件
+         */
+        function exportCSV() {
+            if (tableData.length === 0) {
+                showToast('表格无数据，无法导出', true);
+                return;
+            }
+
+            // 生成CSV头部
+            let csvContent = FIELD_LIST.map(formatCSVField).join(',') + '\n';
+            // 生成CSV数据行
+            tableData.forEach(row => {
+                const rowValues = FIELD_LIST.map(field => formatCSVField(row[field] || ''));
+                csvContent += rowValues.join(',') + '\n';
+            });
+
+            // 创建下载链接
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            const fileName = `亲属关系数据_${new Date().toLocaleDateString()}.csv`;
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', fileName);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url); // 释放URL对象
+            
+            showToast(`CSV文件已导出（${fileName}）`);
+        }
+
+        /**
+         * 导入CSV文件
+         */
+        function importCSV(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const content = e.target.result;
+                    const lines = content.split('\n').filter(line => line.trim() !== '');
+                    
+                    if (lines.length === 0) {
+                        showToast('CSV文件为空，导入失败', true);
+                        return;
+                    }
+
+                    // 解析表头
+                    const header = parseCSVLine(lines[0]);
+                    // 验证表头（不匹配时提示）
+                    const headerMatch = header.every((field, index) => 
+                        index < FIELD_LIST.length && field.trim() === FIELD_LIST[index]
+                    );
+                    if (!headerMatch) {
+                        if (!confirm('CSV表头格式与要求不符（应为：' + FIELD_LIST.join(',') + '），可能导致数据错位，是否继续导入？')) {
+                            return;
+                        }
+                    }
+
+                    // 解析数据行
+                    const newData = [];
+                    let successCount = 0;
+                    for (let i = 1; i < lines.length; i++) {
+                        const line = lines[i].trim();
+                        if (!line) continue;
+
+                        const values = parseCSVLine(line);
+                        const row = {};
+                        
+                        // 映射字段（按FIELD_LIST顺序）
+                        FIELD_LIST.forEach((field, index) => {
+                            row[field] = values[index] ? values[index].trim() : '';
+                        });
+
+                        // 确保ID唯一（重复则重新生成）
+                        const idExists = newData.some(item => item.id === row.id);
+                        if (!row.id || idExists) {
+                            row.id = generateUniqueId();
+                        }
+
+                        newData.push(row);
+                        successCount++;
+                    }
+
+                    // 更新数据并渲染
+                    tableData = newData.length > 0 ? newData : [getDefaultRow()];
+                    renderTable();
+                    updateDataStats();
+                    showToast(`成功导入 ${successCount} 行数据`);
+                } catch (error) {
+                    console.error('CSV导入错误:', error);
+                    showToast(`导入失败：${error.message}`, true);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        /**
+         * 下载CSV模板
+         */
+        function downloadTemplate() {
+            // 生成模板头部
+            let templateContent = FIELD_LIST.join(',') + '\n';
+            // 生成示例数据行
+            const sampleRow = [
+                '1',          // level
+                'TEMPLATE_1', // id（实际使用时自动生成）
+                '',           // parentId
+                '',           // spouseId
+                '',           // isSpouse
+                '张三',       // name
+                '张三三',     // otherName
+                '本人',       // relation
+                '北京',       // local
+                '是',         // success
+                '无',         // simpleStory
+                '',           // databaseId
+                '',           // out_spouseId
+                '正常',       // state
+                '',           // photo
+                '无',         // moreinfo
+                '1990-01-01', // born
+                '',           // dead
+                '男',         // sex
+                '1'           // ischeck
+            ];
+            templateContent += sampleRow.join(',') + '\n';
+            
+            // 创建下载链接
+            const blob = new Blob([templateContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            const fileName = '亲属关系数据模板.csv';
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', fileName);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            showToast('模板文件已下载');
+        }
+
+        /**
+         * 获取默认行数据
+         */
+        function getDefaultRow() {
+            return {
+                level: '1',
+                id: generateUniqueId(),
+                parentId: '',
+                spouseId: '',
+                isSpouse: '',
+                name: '',
+                otherName: '',
+                relation: '',
+                local: '',
+                success: '',
+                simpleStory: '',
+                databaseId: '',
+                out_spouseId: '',
+                state: '',
+                photo: '',
+                moreinfo: '',
+                born: '',
+                dead: '',
+                sex: '',
+                ischeck: ''
+            };
+        }
+
+        /**
+         * 清空表格（保留一行默认数据）
+         */
+        function clearTable() {
+            if (tableData.length === 0) return;
+            if (confirm('确定要清空表格吗？清空后将保留一行默认数据，已编辑内容将丢失！')) {
+                tableData = [getDefaultRow()];
+                renderTable();
+                updateDataStats();
+                showToast('表格已清空，保留默认行');
+            }
+        }
+
+        // 4. 事件绑定
+        function bindEvents() {
+            // 4.1 功能按钮事件
+            document.getElementById('addRowBtn').addEventListener('click', addBlankRow);
+            document.getElementById('exportBtn').addEventListener('click', exportCSV);
+            document.getElementById('importBtn').addEventListener('click', () => {
+                document.getElementById('fileInput').click();
+            });
+            document.getElementById('fileInput').addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    importCSV(e.target.files[0]);
+                    e.target.value = ''; // 重置以支持重复选择同一文件
+                }
+            });
+            document.getElementById('templateBtn').addEventListener('click', downloadTemplate);
+            document.getElementById('clearBtn').addEventListener('click', clearTable);
+
+            // 4.2 右键菜单事件
+            document.getElementById('menuAddChild').addEventListener('click', (e) => {
+                e.preventDefault();
+                addChildRow();
+                document.getElementById('contextMenu').classList.add('hidden');
+            });
+            document.getElementById('menuAddSpouse').addEventListener('click', (e) => {
+                e.preventDefault();
+                addSpouseRow();
+                document.getElementById('contextMenu').classList.add('hidden');
+            });
+            document.getElementById('menuDuplicateRow').addEventListener('click', (e) => {
+                e.preventDefault();
+                duplicateRow();
+                document.getElementById('contextMenu').classList.add('hidden');
+            });
+            document.getElementById('menuDeleteRow').addEventListener('click', (e) => {
+                e.preventDefault();
+                if (currentRightClickIndex !== -1) {
+                    deleteRow(currentRightClickIndex);
+                }
+                document.getElementById('contextMenu').classList.add('hidden');
+            });
+
+            // 4.3 点击空白处关闭右键菜单
+            document.addEventListener('click', () => {
+                document.getElementById('contextMenu').classList.add('hidden');
+            });
+            // 阻止菜单外的右键事件影响
+            document.addEventListener('contextmenu', (e) => {
+                if (!e.target.closest('tr')) {
+                    document.getElementById('contextMenu').classList.add('hidden');
+                }
+            });
+
+            // 4.4 窗口大小变化时重新定位菜单
+            window.addEventListener('resize', () => {
+                document.getElementById('contextMenu').classList.add('hidden');
+            });
+        }
+
+        // 5. 初始化应用
+        function initApp() {
+            initTable();
+            bindEvents();
+        }
+
+        // 页面加载完成后初始化
+        window.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>

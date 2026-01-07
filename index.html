@@ -1,0 +1,348 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>炎黄在线</title>
+    <link rel="stylesheet" href="./css/hd_base.css">
+    <link rel="stylesheet" href="./css/hd_shape.css">
+    <link rel="stylesheet" href="./css/hd_text.css">
+    <link rel="stylesheet" href="./css/hd_edit.css">
+    <link rel="stylesheet" href="./css/hd_show.css">
+</head>
+<body>
+    <div class="page inspiration" id="pg-zptree" style="background: whitesmoke;height: 100vh;">
+        <div class="chart-container" style="z-index:100;"></div>
+
+        <div class="vertical-text" style="font-size: 1.2em; font-family: 'CustomFont'; position: absolute; right: auto; left: 1rem; margin: 0;top: 35%;transform: translateY(-50%);z-index: 101;">
+            <a >记住每个人</a>
+          </div>
+        <div class="nav-logo" onclick="showPage('pg-zps')" style="  right: auto; left: 1rem; margin: 0;top: 50%;transform: translateY(-50%);z-index: 101;">
+            <a class="nav-logo-text"><img src="../resources/go-back.png" style="margin:5px;"/></a>
+          </div>
+          <div class="vertical-text" style="font-size: 1.2em; font-family: 'CustomFont'; position: absolute; right: auto; left: 1rem; margin: 0;top: 65%;transform: translateY(-50%);z-index: 101;">
+            <a >历史才完整</a>
+          </div>
+
+          <div class="sidebar" >
+            <span id="zptitle" class="title-text"  ></span>
+            <span id="zpcount" class="title-text"  style=" background-color: black;color: white; margin-top: 5px;"></span>
+            <span onclick="loadZX()" class="title-text" style=" background-color: black;color: white; margin-top: 5px;">祖训</span>
+            <span onmouseenter="mousein('zb')" onmouseleave="mouseout('zb')" class="title-text" style=" background-color: black;color: white; margin-top: 5px;">字辈</span>
+        </div>
+
+        <div class="vertical-text " id="zpinfo">
+        </div>
+
+        <div class="toolbar"  style="font-size: 1em; font-family: cursive;">
+            <div class="corner corner6  topleft " style="font-size:2.5px;"></div>
+            <div class="corner corner6  topright " style="font-size:2.5px;"></div>
+            <div class="corner corner6  bottomleft " style="font-size:2.5px;"></div>
+            <div class="corner corner6  bottomright " style="font-size:2.5px;"></div>
+            <div class="result-list" id="resultList" >
+                <!-- 动态生成的结果项 -->
+            </div>
+            <div class="zp-info-group" > <!-- 新增容器用于横向布局 -->
+                <!-- <button class="filter-btn" onclick="resetToFullTree()"> -->
+
+                <input type="text" class="search-bar" id="inputField" placeholder="输入名字或代数">
+                <button class="filter-btn" id="zpfilter" onclick="handleFilter()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                </button>
+                <button class="filter-btn" id="zpupone" onclick="zp_up()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up-simple">
+                        <line x1="12" y1="20" x2="12" y2="4"/>
+                        <line x1="18" y1="10" x2="12" y2="4"/>
+                        <line x1="6" y1="10" x2="12" y2="4"/>
+                      </svg>
+                </button>
+                <button class="filter-btn" id="zpopenall" onclick="zp_all()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle-double">
+                        <!-- 大圆圈 -->
+                        <circle cx="12" cy="12" r="8"/>
+                        <!-- 小圆圈 -->
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div> 
+
+    <div class="page" id="pg-zps" style="background: whitesmoke;height: 100vh;">
+        <div class="page-container"  style="width:48%;">
+            <div class="page-tip">
+                <h1>
+                    <span class="large">选择族谱</span>
+                </h1>
+                <h2 class="pinline"><span>崇宗敬祖 源远流长</span></h2>
+            </div>
+
+            <div class="page-subcontainer-scroll ">
+                <div class="page-subcontainer-scroll-content" >
+                <div class="framecards-container" id="zps" style="font-size:1em;"></div>
+                </div>
+            </div>
+        </div> 
+
+        <div class="nav-logo" onclick="showPage('pg-names')" style="  right: auto; left: 1rem; margin: 0;top: 50%;transform: translateY(-50%);z-index: 101;">
+            <a class="nav-logo-text"><img src="../resources/go-back.png" style="margin:5px;"/></a>
+          </div>
+    </div> 
+
+    <div class="page" id="pg-names" style="background: whitesmoke;height: 100vh;">
+        <div class="page-container"  style="width:48%;">
+            <div class="page-tip">
+                <h1>
+                    <span class="large">选择姓氏</span>
+                </h1>
+                <h2 class="pinline"><span>暗红色为有族谱收藏</span></h2>
+            </div>
+
+            <div class="page-subcontainer-scroll ">
+                <div class="page-subcontainer-scroll-content" >
+                <div class="framecards-container" id="names" style="font-size:1.4em;"></div>
+                </div>
+            </div>
+        </div> 
+    </div> 
+
+    <div class="page" id="pg-index" style="background: whitesmoke;height: 100vh;">
+
+        <div class="p-summary" onclick="showPage('pg-names')">
+
+                 
+                <p style="font-weight: 400;line-height: 1.5em;font-size: 3em;font-family: 'LogoFont4';">炎黃在線</p>
+                <p>
+                    <span>记住每个人&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;历史才完整</span>
+                </p>
+                <div class="index-content">
+                    <div class="index-content__container">                     
+                      <ul class="index-content__container__list">
+                        <li class="index-content__container__list__item">族谱新时尚</li>
+                        <li class="index-content__container__list__item">修谱不再难</li>
+                        <li class="index-content__container__list__item">入谱更简单</li>
+                        <li class="index-content__container__list__item">公益&nbsp;&nbsp;&nbsp;免费</li>
+                        <li class="index-content__container__list__item">难得文化</li>
+                      </ul>
+                    </div>
+                </div>
+                <img class="wx-qrcode"
+                    src="./data/wx.png" 
+                    alt="想要加入请扫码" 
+                >
+        </div>
+          
+        <canvas class="p-canvas-webgl" id="canvas-webgl"></canvas>
+    </div> 
+
+
+
+    <div class="tooltip basic-theme" id="sharedTooltip"></div>
+
+    <div class="tooltip basic-theme" id="nodeContextMenu" style="--grain-china-corner-color:#000000;width: 160px;">
+        <div class="corner corner6  topleft " style="font-size:5px;"></div>
+        <div class="corner corner6  topright " style="font-size:5px;"></div>
+        <div class="corner corner6  bottomleft " style="font-size:5px;"></div>
+        <div class="corner corner6  bottomright " style="font-size:5px;"></div>
+        <div class="menu-item" data-action="addChild">添加子女</div>
+        <div class="menu-item" data-action="addSponse">添加配偶</div>
+        <div class="menu-item" data-action="addMoreInfo">添加个人信息</div>
+        <div class="menu-item" data-action="confirm">认证</div>
+      </div>
+
+
+    <div class="pop" id="pop-form" >
+        <div class="pop-box" style="  width: 60%; height: 80%;">
+            <div class="vertical-text" style="font-size: 1.2em; font-family: 'CustomFont'; position: absolute; right: auto; left: 1rem; margin: 0;top: 50%;transform: translateY(-50%);z-index: 101;">
+                <a >游子回乡</a>
+              </div>
+            <div class="framecard-frame">
+                <div class=" corner corner6 topleft" style="font-size:5px; "></div>
+                <div class="corner corner6 topright" style="font-size:5px; "></div>
+                <div class="corner corner6 bottomleft" style="font-size:5px; "></div>
+                <div class="corner corner6 bottomright" style="font-size:5px; "></div>
+
+                <button class="modal__close" onclick="closePop()">&times;</button>
+
+                <div class="form-container" id="taskForm" style="font-size: 1.2em; font-family: 'CustomFont';">
+                    <form action="#">
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="inputBox">
+                                    <label for="node-name">姓名:</label>
+                                    <input type="text" id="node-name" placeholder="输入姓名" required>
+                                </div>
+            
+                                <div class="inputBox">
+                                    <label for="node-sex">性别:</label>
+                                    <select name="" id="node-sex">
+                                        <option value="January">男</option>
+                                        <option value="February">女</option>
+                                    </select>
+                                </div>
+            
+                                <div class="inputBox">
+                                    <label for="node-parent">父亲</label>
+                                    <input type="text" id="node-parent" disabled>
+                                </div>
+
+                                <div class="inputBox">
+                                    <label for="node-sponse">配偶</label>
+                                    <input type="text" id="node-sponse" disabled>
+                                </div>
+            
+                                <div class="flex">
+                                    <div class="inputBox label-top">
+                                        <label for="node-born">出生年月</label>
+                                        <input type="datetime-local" id="node-born">
+                                    </div>
+            
+                                    <div class="inputBox label-top">
+                                        <label for="node-end">离开年月</label>
+                                        <input type="datetime-local" id="node-end">
+                                    </div>
+                                </div>
+
+                                <div class="inputBox">
+                                    <label for="node-sucess">主要成就</label>
+                                    <textarea id="node-sucess" rows="2"></textarea>
+                                </div>
+
+                                <div class="inputBox">
+                                    <label for="node-description">简要介绍</label>
+                                    <textarea id="node-description" rows="5"></textarea>
+                                </div>
+
+                                <div class="inputBox">
+                                    <label for="node-Image">头像</label>
+                                    <input type="file" id="node-Image" accept="image/*">
+                                </div>
+                                <button type="submit" class="submit_btn" id="node-add" onclick="addnode(event)">添加</button>
+
+                            </div>
+            
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pop" id="pop-text">
+        <div class="pop-box">
+            <div class="framecard-frame" style="margin:6px;">
+                <div class="corner corner6 topleft" style="font-size:8px; "></div>
+                <div class="corner corner6 topright" style="font-size:8px; "></div>
+                <div class="corner corner6 bottomleft" style="font-size:8px; "></div>
+                <div class="corner corner6 bottomright" style="font-size:8px; "></div>
+                <div class="pop-container" >
+                    <span id="poptext" style="display: inline-block;font-family: CustomFont,cursive;font-size:18px;">${content}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pop" id="pop-show">
+        <div class="pop-box" style="max-width: 900px;width: 60%;">
+            <div class="framecard-frame" style="margin:6px;">
+                <div class="corner corner6 topleft" style="font-size:8px; "></div>
+                <div class="corner corner6 topright" style="font-size:8px; "></div>
+                <div class="corner corner6 bottomleft" style="font-size:8px; "></div>
+                <div class="corner corner6 bottomright" style="font-size:8px; "></div>
+
+                <div class="l-main bd-container" style="width:100%;height:100%;padding:5px 35px;">
+                    <div class="resume" id="area-cv"  style="width:100%;height:100%;">
+                        <div class="resume-left">
+                            <section class="home" id="home">
+                                <div class="home-container section bd-grid" style=" font-family: 'CustomFont';">
+                                    <div class="home-data bd-grid">
+                                        <!-- Download the image and put it in the source to appear the image in PDF download -->
+                                        <img src="./data/xiegong.png" alt="" class="home-img" id="show-node-Image">
+            
+                                        <h1 class="home-title" id="show-node-name"></h1>
+                                        <h3 class="home-profession" id="show-node-level"></h3>
+                                    </div>
+            
+                                    <div class="home-address bd-grid">
+                                        <b><span class="home-information" id="show-node-sucess">
+                                            
+                                        </span></b>
+            
+                                        <span class="home-information">
+                                            (<span  id="show-node-born"></span>)---(<span  id="show-node-end"></span>)
+                                        </span>
+            
+                                    </div>
+                                </div>
+
+                                <section class="social section" style="font-size: 1.2em;font-weight: bold;">
+                                    <div class="social-container" style="
+                                      display: grid;
+                                      grid-template-columns: 1fr;
+                                      gap: 8px;
+                                    ">
+                                      <a href="#" class="social-link" style="
+                                        padding: 12px 16px;
+                                        background-color: #f5f5f5;
+                                        border-radius: 4px;
+                                        text-decoration: none;
+                                        color: #333;
+                                        transition: background-color 0.3s;
+                                      "  onclick="loadStory()">
+                                        生平事迹
+                                      </a>
+                                      <a href="#" class="social-link" style="
+                                        padding: 12px 16px;
+                                        background-color: #f5f5f5;
+                                        border-radius: 4px;
+                                        text-decoration: none;
+                                        color: #333;
+                                        transition: background-color 0.3s;
+                                      "  onclick="loadScore()">
+                                        主要评价
+                                      </a>
+                                    </div>
+                                  </section>
+            
+                                <!-- Theme Changing Button -->
+            
+                                <i class="bx bx-moon change-theme" title="Theme" id="theme-button"></i>
+            
+                                <!-- PDF Download Button. Only available in desktop -->
+            
+                                <i class="bx bx-download generate-pdf" id="resume-button" title="Generate PDF"></i>
+            
+                            </section>
+                        </div>
+                        <div class="resume-right">
+                            <div class="blog-right" style="margin-top:0px;scrollbar-gutter: stable;padding-right: 18px;">
+                                <div style="margin-top:0px;">
+                                    <section class="experience section" id="experience">
+                                        <div class="experience-container bd-grid" id='story-contain'>
+                                            
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/three.min.js"></script>
+    <script src="../js/hd_zp.js"></script>
+    <script src="../js/hd_data.js"></script>
+    <script src="../js/jquery.js"></script>
+    <script src="../js/node_modules/d3/dist/d3.min.js"></script>
+    
+    <script src="../js/d3-org-chart.js"></script>
+    <script src="../js/node_modules/d3-flextree/build/d3-flextree.js"></script>
+</body>
+</html>
